@@ -10,65 +10,58 @@ import FabricCanvas from "./canvas/FabricCanvas.tsx";
 const HomeAssistantComponent = () => {
     const [stateData, setStateData] = useState<Record<string, any>>({});
     const [isLight, setIsLight] = useState<boolean>(false);
-    const [hexColor, setHexColor] = useState<string>('pink');
+    const [hexColor, setHexColor] = useState<string>('');
+    const [rgbColor, setRGBColor] = useState<number[]>([]);
 
     useEffect(() => {
         fetchStates();
     }, []);
 
+    const API_BASE_URL = 'https://ha.mshomedomain.com/api/states/light.sypialnia_spot_5';
+    const stateUrl = `${API_BASE_URL}`;
     const fetchStates = async () => {
         try {
             const response = await axios.get(stateUrl, {
-                headers: requiredHeaders,
+                headers: {
+                    'Authorization':  'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiIxNDRlMWNkYjRmY2Y0ODAzYmNiMjM4ZTMxNWEwNzIwNyIsImlhdCI6MTcyNTgwNjM1OSwiZXhwIjoyMDQxMTY2MzU5fQ.gTJEZ_1uVYftGxTX4Knk4YXKoUDfYuLuKdyoJpxcHcE',
+                    'Content-Type': 'application/json',
+                    'Access-Control-Allow-Origin': '*'
+                },
             });
 
             console.log('API response:', response.data);
-            setStateData(response.data);
+            await setRGBColor(response.data?.attributes?.rgb_color)
+            console.log('rgbColor', rgbColor);
+            await setStateData(response.data);
+            console.log('API stateData:', stateData);
         } catch (err) {
             console.error('Error fetching states:', err);
         }
     };
 
-    const getRgbColor = (data?: Record<string, any>): number[] | undefined => {
-        if (!data || typeof data !== 'object') {
-            return undefined;
+    useEffect(() => {
+        console.log('getRgbColor called')
+        if (_.isEmpty(rgbColor)) {
+            setIsLight(false);
+        } else {
+        setIsLight(true)
+       const recalculation = rgbColor?.map(val => val.toString(16).padStart(2, '0')).join('')
+            console.log(recalculation, 'recalculation');
+        setHexColor(recalculation)
         }
-
-        return data.attributes?.rgb_color;
-    };
-
-
-    /**
-     * TUTAJ NA RAZIE CZEKAM AŻ ZAPALISZ ŚWIATŁO :P
-     */
-
-
-    // const rgbColor = useMemo(() => {
-    //     const isLightThere = getRgbColor(stateData)
-    //     if (isLightThere === undefined ) {
-    //         setIsLight(false);
-    //         return console.warn('Swiatlo wylaczone')
-    //     }
-    //     setIsLight(true)
-    //     return isLightThere;
-    // }, [stateData]);
-
-    // setHexColor(rgbColor ? rgbColor.map(val => val.toString(16).padStart(2, '0')).join('') : '');
-    // console.log(rgbColor);
-    console.log(hexColor);
+    }, [rgbColor]);
 
     return (
         <div >
-            {isLight && !_.isEmpty(hexColor) ? ( <input
+            {isLight ? ( <input
                 type="color"
                 id="favcolor"
                 name="favcolor"
                 value={`#${hexColor}`}
-            />): <h3>Uwaga! Światło w pokoju jest wyłączone</h3>}
+            />): <h3>Uwaga!  Światło w pokoju jest wyłączone</h3>}
             <div className={'main-home'}>
                 <Menu />
-                <FabricCanvas hexColor={hexColor}/>
-                {/*<img src={image} alt={'bob'} className={'image-size'} />*/}
+                <FabricCanvas hexColor={`#${hexColor}`}/>
             </div>
 
         </div>

@@ -14,7 +14,7 @@ const FabricCanvas: React.FC<FabricCanvasProps> = ({ children, hexColor }) => {
         if (canvasRef.current) {
             const canvas = new fabric.Canvas(canvasRef.current, {width: 1500, height: 1000});
             const shadow = new Shadow({
-                color: '#ff438f',
+                color: hexColor,
                 blur: 40,
                 offsetX: 26,
                 offsetY: 26,
