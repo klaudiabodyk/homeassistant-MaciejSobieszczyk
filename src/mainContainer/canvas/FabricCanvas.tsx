@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import * as fabric from 'fabric';
+import {Circle, Shadow} from "fabric";
 
 interface FabricCanvasProps {
     children?: React.ReactNode;
@@ -12,11 +13,24 @@ const FabricCanvas: React.FC<FabricCanvasProps> = ({ children, hexColor }) => {
     useEffect(() => {
         if (canvasRef.current) {
             const canvas = new fabric.Canvas(canvasRef.current, {width: 1500, height: 1000});
-            const circle = new fabric.Circle({
+            const shadow = new Shadow({
+                color: '#ff438f',
+                blur: 40,
+                offsetX: 26,
+                offsetY: 26,
+                affectStroke: true,
+                includeDefaultValues: true,
+                nonScaling: true
+            });
+
+            const circle = new Circle({
                 top: 155,
                 left: 370,
-                radius: 20,
-                fill: hexColor
+                radius: 30,
+                fill: hexColor,
+                originX: 'center',
+                originY: 'center',
+                shadow: shadow
             });
 
             canvas.add(circle);
