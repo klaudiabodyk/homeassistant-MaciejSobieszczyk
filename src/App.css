@@ -1,8 +1,16 @@
 #root {
-  max-width: 1280px;
   margin: 0 auto;
-  padding: 2rem;
   text-align: center;
+  color: white;
+  //background: linear-gradient(83deg, rgba(56,29,0,1) 0%, rgba(0,0,0,1) 100%);
+  background-image: url('/src/assets/Warstwa_2.png');
+  background-size: cover;
+  background-position: center;
+  height: 100%
+}
+.image-size {
+  width: 80%;
+  height: 80%;
 }
 
 .logo {

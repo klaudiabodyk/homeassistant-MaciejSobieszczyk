@@ -1,0 +1,32 @@
+.wrapper {
+    display: flex;
+    background: linear-gradient(83deg, rgba(56,29,0,1) 0%, rgba(0,0,0,1) 100%);
+}
+
+.menuContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 30px;
+    width: 300px;
+    height: 100vh;
+    align-items: center;
+    margin-top: 80px;
+}
+
+.header {
+    color: #ffffff;
+    font-size: 24px;
+    margin-bottom: 90px;
+}
+
+.button {
+    background: linear-gradient(180deg, rgba(146,95,33,1) 0%, rgba(29,15,1,1) 20%);
+    color: white;
+    border: none;
+    margin-bottom: 25px;
+    border-radius: 20px;
+    cursor: pointer;
+    text-align: center;
+    font-size: 22px;
+    width: 160px;
+}
